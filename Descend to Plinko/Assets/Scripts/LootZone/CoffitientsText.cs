@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Text;
 using TMPro;
 using UnityEngine;
@@ -9,8 +10,8 @@ namespace Assets.Scripts.LootZone
     {
         protected enum Colors
         {
-            green = 0,
-            red = 1,
+            red = 0,
+            green = 1,
             blue = 2,
             purple = 3,
             yellow = 4,
@@ -34,8 +35,8 @@ namespace Assets.Scripts.LootZone
             {
                 float str = (float)Math.Round(_coinZone.Coffs[j], 2);
                 string color = $"{(Colors)j}";
-
-                stringBuilder.Append($"<color={color}>{str}</color> ");
+                
+                stringBuilder.Append($"<color={color}> {str}</color>");
                 if(j % 2 == 1)
                 {
                     stringBuilder.AppendLine();

@@ -1,3 +1,4 @@
+using Assets.Scripts;
 using Assets.Scripts.LootZone;
 using JetBrains.Annotations;
 using System.Collections;
@@ -8,7 +9,6 @@ public class GoldIconRise : MonoBehaviour
 {
     [SerializeField] private List<CoinsZone> _zones = new List<CoinsZone>();
     private Animator _animator;
-    private string _triggerName = "GoldIncrease";
 
     private void Awake()
     {
@@ -34,6 +34,6 @@ public class GoldIconRise : MonoBehaviour
 
     private void StartAnimationPlay()
     {
-        _animator.SetTrigger(_triggerName);
+        _animator.SetTrigger(Keys.GoldIncrease);
     }
 }

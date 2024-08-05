@@ -31,8 +31,7 @@ namespace Assets.Scripts.SceneManage
 
         private void SetTextSize(TextMeshProUGUI text)
         {
-            Camera cam = Camera.main;
-            float screenHeightInUnits = cam.orthographicSize * 2;
+            float screenHeightInUnits = CameraSize.Height;
             float screenHeightInPixels = Screen.height;
             float pixelsPerUnit = screenHeightInPixels / screenHeightInUnits;
 

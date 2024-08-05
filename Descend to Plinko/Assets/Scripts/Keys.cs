@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Assets.Scripts
 {
@@ -11,5 +7,8 @@ namespace Assets.Scripts
         public static string GoldKey => nameof(GoldKey);
         public static string OnEnterApplicateTimeCode => nameof(OnEnterApplicateTimeCode);
         public static string OnExitApplicateTimeCode => nameof(OnExitApplicateTimeCode);
+        public static string GoldIncrease => nameof(GoldIncrease);
+        public static string BallsTimeAdd => nameof(BallsTimeAdd);
+
     }
 }

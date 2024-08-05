@@ -9,9 +9,9 @@ namespace Assets.Scripts.VectorSlide
 {
     internal class BallVectorDirection : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
-        public Vector2 _touchPoint {  get; private set; }
-        public Vector2 _lastPount { get; private set; }
-        public Vector2 _velocity {  get; private set; }
+        private Vector2 _touchPoint;
+        private Vector2 _lastPount;
+        private Vector2 _velocity;
 
         public void OnPointerDown(PointerEventData eventData)
         {
@@ -26,7 +26,8 @@ namespace Assets.Scripts.VectorSlide
 
         private async void UpdateVelocity()
         {
-            _velocity = (_lastPount - _touchPoint).normalized * 10;
+            _velocity = (_lastPount - _touchPoint);
+            print("velocityPrev: " + _velocity);
 
             if(_velocity.y > 0)
             {

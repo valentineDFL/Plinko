@@ -7,6 +7,9 @@ namespace Assets.Scripts.IdleGoldGrind
     internal class IdleGoldGrind : MonoBehaviour
     {
         [SerializeField] private List<GameObject> _ui = new List<GameObject>();
+        [SerializeField] [Range(20, 180)] private int _ballCreationTime;
+
+        public event Action<long> StartGoldAdded;
 
         private void OnEnable()
         {
@@ -27,7 +30,7 @@ namespace Assets.Scripts.IdleGoldGrind
 
             long sec = (long)(start - exit).TotalSeconds;
             print("exitTime: " + exit + " startTime: " + start + " sec: " + sec);
-            
+            StartGoldAdded?.Invoke(sec / _ballCreationTime);
         }
     }
 }

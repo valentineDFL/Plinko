@@ -11,23 +11,18 @@ namespace Assets.Scripts.SceneManage
     {
         [SerializeField] private GameObject _leftWall;
         [SerializeField] private GameObject _rightWall;
-        private float _width;
-        private float _height;
 
         private void Awake()
         {
-            Camera camera = Camera.main;
-            _height = 2f * camera.orthographicSize;
-            _width = _height * camera.aspect;
 
             SetAdaptive();
         }
 
         protected override void SetAdaptive()
         {
-            float pos = (_width / 2) + _leftWall.transform.localScale.x / 2;
+            float pos = (CameraSize.Width / 2) + _leftWall.transform.localScale.x / 2;
 
-            _leftWall.transform.localScale = new Vector2(1, _height);
+            _leftWall.transform.localScale = new Vector2(1, CameraSize.Height);
             _leftWall.transform.position = new Vector2(-pos, 0);
 
             _leftWall.transform.localScale = _leftWall.transform.localScale;

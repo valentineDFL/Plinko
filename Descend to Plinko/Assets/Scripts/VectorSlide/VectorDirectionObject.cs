@@ -18,7 +18,8 @@ namespace Assets.Scripts.VectorSlide
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            collision.gameObject.GetComponent<Rigidbody2D>().velocity = _velocity;
+            collision.gameObject.GetComponent<Rigidbody2D>().velocity += _velocity;
+            print(collision.gameObject.GetComponent<Rigidbody2D>().velocity += _velocity);
         }
     }
 }

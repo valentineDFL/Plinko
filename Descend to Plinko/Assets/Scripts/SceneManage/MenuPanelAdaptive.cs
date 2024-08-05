@@ -8,16 +8,8 @@ namespace Assets.Scripts.SceneManage
         [SerializeField] private GameObject _menuPanel;
         [SerializeField] private GameObject _background;
 
-        private float _width;
-        private float _height;
-        private Camera _camera;
-
         private void Awake()
         {
-            _camera = Camera.main;
-            _height = 2f * _camera.orthographicSize;
-            _width = _height * _camera.aspect;
-
             SetAdaptive();
         }
 
@@ -25,12 +17,12 @@ namespace Assets.Scripts.SceneManage
         {
             float screenHeight = Screen.height;
             float space = screenHeight - _background.GetComponent<Image>().rectTransform.rect.height;
-            float nedeedYScale = space / (screenHeight / _height);
+            float nedeedYScale = space / (screenHeight / CameraSize.Height);
 
-            _menuPanel.transform.localScale = new Vector2(_width, nedeedYScale);
+            _menuPanel.transform.localScale = new Vector2(CameraSize.Width, nedeedYScale);
 
             float halfYSize = _menuPanel.transform.localScale.y / 2;
-            _menuPanel.transform.position = new Vector2(0, (_height / 2) - halfYSize); 
+            _menuPanel.transform.position = new Vector2(0, (CameraSize.Height / 2) - halfYSize); 
         }
     }
 }

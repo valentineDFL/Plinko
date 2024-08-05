@@ -29,8 +29,8 @@ namespace Assets.Scripts.LootZone
         {
             _coffs = new List<float>()
             {
-                _greenCoff,
                 _redCoff,
+                _greenCoff,
                 _blueCoff,
                 _purpleCoff,
                 _yellowCoff,
@@ -45,13 +45,13 @@ namespace Assets.Scripts.LootZone
 
                 if (number > 7)
                 {
-                    coffitient = UnityEngine.Random.Range(-1, -0.1f);
+                    coffitient = UnityEngine.Random.Range(-0.1f, 1.0f);
                 }
                 else if (number < 7)
                 {
                     coffitient = UnityEngine.Random.Range(0.1f, 4.0f);
                 }
-                _coffs[i] = coffitient;
+                _coffs[i] = 100;//(float)Math.Round(coffitient, 1);
             }
             // стоимость улучшений каждый раз прибавляется на 6.5 - 7 процента
             
@@ -62,8 +62,8 @@ namespace Assets.Scripts.LootZone
             if(collision.GetComponent<Ball>())
             {
                 Ball ball = collision.GetComponent<Ball>();
-                collision.gameObject.transform.position = _spawnPos.transform.position;
                 collision.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
+                collision.gameObject.transform.position = _spawnPos.transform.position;
 
                 BallByType(ball);
 
