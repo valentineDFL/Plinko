@@ -1,86 +1,34 @@
-using Assets.Scripts;
-using Assets.Scripts.LootZone;
-using System;
-using System.Collections;
-using System.Collections.Generic;
+using Assets.Scripts.Gold;
 using TMPro;
 using UnityEngine;
 
+[RequireComponent(typeof(TextMeshProUGUI))]
 public class GoldCount : MonoBehaviour
 {
-    [SerializeField] private List<CoinsZone> _zones = new List<CoinsZone>();
-    private long _count;
+    [SerializeField] private Bank _bank;
     private TextMeshProUGUI _textMeshPro;
-
-    private void Awake()
-    {
-        _textMeshPro = GetComponent<TextMeshProUGUI>();
-        bool parse = long.TryParse(PlayerPrefs.GetString(Keys.GoldKey), out long result);
-        if (parse)
-        {
-            _count = result;
-        }
-        _textMeshPro.text = Ceil();
-    }
+    private CeilGold _ceilGold;
 
     private void OnEnable()
     {
-        for(int i = 0; i < _zones.Count; i++)
-        {
-            _zones[i].GoldCountChanged += SetGoldCount;
-        }
+        _bank.GoldIncreased += SetGoldCount;
     }
 
     private void OnDisable()
     {
-        for (int i = 0; i < _zones.Count; i++)
-        {
-            _zones[i].GoldCountChanged -= SetGoldCount;
-        }
-
-        PlayerPrefs.SetString(Keys.GoldKey, _count.ToString());
-        PlayerPrefs.Save();
-        PlayerPrefs.DeleteKey(Keys.GoldKey);
+        _bank.GoldIncreased -= SetGoldCount;
     }
 
-    private void SetGoldCount(int count)
+    private void Start()
     {
-        if(_count + count > 0)
-        {
-            _count += count;
-        }
-        else if(_count + count <= 0)
-        {
-            _count = 0;
-        }
+        _ceilGold = new CeilGold();
+        _textMeshPro = GetComponent<TextMeshProUGUI>();
 
-        _textMeshPro.text = Ceil();
+        _textMeshPro.text = _ceilGold.Ceil(_bank.Gold);
     }
 
-    private string Ceil()
+    private void SetGoldCount(long count)
     {
-        int thousend = 1000;
-        int million = 1000000;
-        int billion = 1000000000;
-        string res = "";
-
-        int[] nums = new int[] {thousend, million, billion };
-        char[] chars = new[] {'K', 'M', 'B'};
-
-        if(_count < nums[0])
-        {
-            res = _count.ToString();
-            return res;
-        }
-
-        for(int i = 0; i < nums.Length; i++)
-        {
-            if (_count >= nums[i])
-            {
-                res = $"{Math.Round((double)_count / nums[i], 3)}{chars[i]}";
-                continue;
-            }
-        }
-        return res;
+        _textMeshPro.text = _ceilGold.Ceil(count);
     }
 }

@@ -32,7 +32,6 @@ namespace Assets.Scripts.SceneManage
         {
             Bounds scale = _metronomeSpawnerAdaptive.GetComponent<SpriteRenderer>().bounds;
             Vector2 left = new Vector2(_metronomeSpawnerAdaptive.transform.position.x, _metronomeSpawnerAdaptive.transform.position.y - scale.size.y * 2);
-            int possitionMultiplyCoff = 2;
 
             float height = _height / 2;
             float width = _width - _staticBalls[0].transform.localScale.x;

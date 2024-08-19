@@ -9,6 +9,8 @@ namespace Assets.Scripts
         public static string OnExitApplicateTimeCode => nameof(OnExitApplicateTimeCode);
         public static string GoldIncrease => nameof(GoldIncrease);
         public static string BallsTimeAdd => nameof(BallsTimeAdd);
+        public static string Data => nameof(Data);
+        public static string Owned => nameof(Owned);
 
     }
 }
