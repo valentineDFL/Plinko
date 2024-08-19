@@ -13,9 +13,11 @@ namespace Assets.Scripts.Shop
         public event Action<Sprite> CurrentBackgroundChanged;
 
         private Sprite _background;
+        private TextMeshProUGUI _priceTag;
 
         private void Awake()
         {
+            _priceTag = GetComponentInChildren<TextMeshProUGUI>();
             _background = GetComponent<Image>().sprite;
         }
 
@@ -49,7 +51,7 @@ namespace Assets.Scripts.Shop
             {
                 if (Price <= Bank.Gold)
                 {
-                    GetComponentInChildren<TextMeshProUGUI>().text = Keys.Owned;
+                    _priceTag.text = Keys.Owned;
                     IsBuying = true;
                     // отправить в логи статус покупки, добавить в текст статус куплено
                     print("Я купил предмет");
@@ -67,6 +69,7 @@ namespace Assets.Scripts.Shop
             Sprite currentBackground = GetComponentInParent<EquipBackground>().CurrentSprite;
             if (currentBackground != _background)
             {
+                _priceTag.text = Keys.Used;
                 CurrentBackgroundChanged?.Invoke(_background);
             }
         }

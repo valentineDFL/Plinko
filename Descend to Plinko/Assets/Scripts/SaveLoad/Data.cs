@@ -29,17 +29,22 @@ namespace Assets.Scripts.JsonSaver
 
         public void SetGold(long gold)
         {
+            Debug.Log("старый баланс денег: " + _gold);
             _gold = gold;
+            Debug.Log("новый баланс денег: " + _gold);
         }
 
         public void ChangeCurrentBackground(Sprite sprite)
         {
             _currentBackground = sprite;
+            Debug.Log("новый задний фон: " + _currentBackground.name);
         }
 
         public void ChangeCurrentMusic(AudioClip audioClip)
         {
+            Debug.Log("старая музыка: " + _currentMusic.name);
             _currentMusic = audioClip;
+            Debug.Log("новая музыка: " + _currentMusic.name);
         }
 
         public void ChangeItemBuyStatus(string key, bool status)

@@ -8,12 +8,12 @@ namespace Assets.Scripts.Gold
 {
     internal class Bank : MonoBehaviour
     {
+        public event Action<long> GoldIncreased;
+
         [SerializeField] private DataRecorder _loadGold;
         [SerializeField] private List<AddItemToShop> _itemForSaleFolder = new List<AddItemToShop>();
         private List<ItemForSale> _itemsForSaleSubscribers = new List<ItemForSale>();
-        public event Action<long> GoldIncreased;
         
-
         private long _gold;
         public long Gold => _gold;
 
@@ -24,6 +24,7 @@ namespace Assets.Scripts.Gold
 
         private void Start()
         {
+
             InitItems();
 
             for (int i = 0; i < _itemsForSaleSubscribers.Count; i++)

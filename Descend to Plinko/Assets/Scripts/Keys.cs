@@ -11,6 +11,7 @@ namespace Assets.Scripts
         public static string BallsTimeAdd => nameof(BallsTimeAdd);
         public static string Data => nameof(Data);
         public static string Owned => nameof(Owned);
+        public static string Used => nameof(Used);
 
     }
 }

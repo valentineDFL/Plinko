@@ -23,7 +23,6 @@ public class GoldCount : MonoBehaviour
     {
         _ceilGold = new CeilGold();
         _textMeshPro = GetComponent<TextMeshProUGUI>();
-
         _textMeshPro.text = _ceilGold.Ceil(_bank.Gold);
     }
 

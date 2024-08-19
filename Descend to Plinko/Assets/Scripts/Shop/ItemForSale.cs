@@ -9,9 +9,10 @@ namespace Assets.Scripts.Shop
     internal abstract class ItemForSale : MonoBehaviour
     {
         public abstract event Action<long> ItemBuyed;
-        protected GameObject NotEnoughtMoneyPanel;
-        protected Bank Bank;
-        protected long Price;
+
+        [SerializeField] protected GameObject NotEnoughtMoneyPanel;
+        [SerializeField] protected Bank Bank;
+        [SerializeField] protected long Price;
 
         protected abstract void BuyItem();
         protected abstract void EquipBuyedItem();

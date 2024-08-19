@@ -14,8 +14,6 @@ namespace Assets.Scripts.Shop.Equip
 
         private void Start()
         {
-            CurrentSprite = SubscribersForEquip[0].GetComponent<Image>().sprite;
-
             for (int i = 0; i < ChildCount; i++)
             {
                 BuyBackground currentBackground = ItemForSaleFolder.transform.GetChild(i).GetComponent<BuyBackground>();
@@ -26,6 +24,9 @@ namespace Assets.Scripts.Shop.Equip
             {
                _itemsForSale[i].CurrentBackgroundChanged += Equip;
             }
+
+            InitializeStartupBackground();
+            Equip(CurrentSprite);
         }
 
         private void OnDisable()
@@ -43,6 +44,21 @@ namespace Assets.Scripts.Shop.Equip
             for (int i = 0; i < SubscribersForEquip.Count; i++)
             {
                 SubscribersForEquip[i].GetComponent<Image>().sprite = sprite;
+            }
+        }
+
+        private void InitializeStartupBackground()
+        {
+            if (DataRecorder.CurrentBackground == null)
+            {
+                print("Вход произошёл в то что в дата null задний фон");
+                CurrentSprite = SubscribersForEquip[0].GetComponent<Image>().sprite;
+                Equip(CurrentSprite);
+            }
+            else
+            {
+                CurrentSprite = DataRecorder.CurrentBackground;
+                print("Вход произошёл в то что в дата задний фон не null" + DataRecorder.CurrentBackground.name);
             }
         }
     }

@@ -12,5 +12,9 @@ namespace Assets.Scripts.Shop
         [SerializeField] protected long Price;
         protected abstract void InitItems();
         protected abstract void SetItemsPrice(long currentPrice, GameObject currentChild);
+        protected long SetItemPrice(int i)
+        {
+            return Price * i;
+        }
     }
 }

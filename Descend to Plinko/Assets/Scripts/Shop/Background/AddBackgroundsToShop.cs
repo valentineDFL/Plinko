@@ -14,8 +14,8 @@ namespace Assets.Scripts.Shop
         private void Awake()
         {
             _initializeText = new InitializeText();
-
             InitItems();
+            print("добавление товаров");
         }
 
         protected override void InitItems()
@@ -27,7 +27,7 @@ namespace Assets.Scripts.Shop
             {
                 currentChild = transform.GetChild(i).AddComponent<BuyBackground>();
                 string currentChildName = currentChild.name;
-                long currentPrice = Price * (long)i;
+                long currentPrice = SetItemPrice(i);
 
                 if(i == 0)
                 {
@@ -37,12 +37,14 @@ namespace Assets.Scripts.Shop
 
                 if (status != null)
                 {
+                    print("test");
                     ContainsItemNameCheck(status, currentChildName, currentChild, currentPrice);
                 }
                 else // сделать систему что если у нас словарь нулл, то мы его инициализируем
                 {
                     SetDefault(currentChild, NotEnoughtMoneyPanel, currentPrice);
                 }
+
                 SetItemsPrice(currentPrice, currentChild.gameObject);
             }
         }
@@ -67,6 +69,11 @@ namespace Assets.Scripts.Shop
         protected override void SetItemsPrice(long currentPrice, GameObject currentChild)
         {
             _initializeText.InitPrice(currentPrice, currentChild.gameObject);
+        }
+
+        private void OnDestroy()
+        {
+            print("удаление подписчика");
         }
     }
 }
