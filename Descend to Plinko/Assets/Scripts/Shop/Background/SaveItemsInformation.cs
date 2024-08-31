@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Assets.Scripts.SaveLoad
+namespace Assets.Scripts.Shop.Background
 {
-    internal class ShopData
+    internal class SaveItemsInformation
     {
-        
     }
 }

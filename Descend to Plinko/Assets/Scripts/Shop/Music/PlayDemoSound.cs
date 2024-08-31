@@ -4,7 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.Shop.SoundShop
@@ -21,7 +20,6 @@ namespace Assets.Scripts.Shop.SoundShop
         private Sprite _buttonSpriteStart;
 
         public bool IsPlaying => _audioSource.isPlaying;
-
 
         private void Awake()
         {
@@ -43,28 +41,17 @@ namespace Assets.Scripts.Shop.SoundShop
             _button.image.sprite = _buttonSpriteStop;
             
             await Task.Delay(_delayWaitInSec * _secondsMultiplyerCoff);
-            
-            ReturnBack();            
+
+            CancelPlaying();            
         }
 
-        private void CancelPlaying()
+        public void CancelPlaying()
         {
             if (_audioSource.isPlaying)
             {
                 _audioSource?.Stop();
                 _button.image.sprite = _buttonSpriteStart;
             }
-        }
-
-        private void ReturnBack()
-        {
-            _audioSource?.Stop();
-            _button.image.sprite = _buttonSpriteStart;
-        }
-
-        private void StopPlayingClips()
-        {
-            
         }
     }
 }

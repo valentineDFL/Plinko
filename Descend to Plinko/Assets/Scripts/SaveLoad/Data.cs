@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Unity.Mathematics;
+using Assets.Scripts.SaveLoad;
+using Assets.Scripts.Shop;
 using UnityEngine;
 
 namespace Assets.Scripts.JsonSaver
@@ -11,20 +12,16 @@ namespace Assets.Scripts.JsonSaver
         [SerializeField] private long _gold;
         [SerializeField] private Sprite _currentBackground;
         [SerializeField] private AudioClip _currentMusic;
-        [SerializeField] private Dictionary<string, bool> _catalogueItemsStatus;
-        [SerializeField] private Dictionary<string, string> _catalogueItemsPriceCaption;
 
         public long Gold => _gold;
         public Sprite CurrentBackground => _currentBackground;
         public AudioClip CurrentMusic => _currentMusic;
-        public Dictionary<string, bool> CatalogueItemsStatus => _catalogueItemsStatus;
 
-        public Data(long gold, Sprite sprite, AudioClip music, Dictionary<string, bool> catalogueItemsStatus)
+        public Data(long gold, Sprite sprite, AudioClip music)
         {
             _gold = gold;
             _currentBackground = sprite;
             _currentMusic = music;
-            _catalogueItemsStatus = catalogueItemsStatus;
         }
 
         public void SetGold(long gold)
@@ -45,22 +42,6 @@ namespace Assets.Scripts.JsonSaver
             Debug.Log("старая музыка: " + _currentMusic.name);
             _currentMusic = audioClip;
             Debug.Log("новая музыка: " + _currentMusic.name);
-        }
-
-        public void ChangeItemBuyStatus(string key, bool status)
-        {
-            if (_catalogueItemsStatus.ContainsKey(key))
-            {
-                _catalogueItemsStatus[key] = status;
-            }
-        }
-
-        public void AddNewStatus(string keyName, bool status)
-        {
-            if (!_catalogueItemsStatus.ContainsKey(keyName))
-            {
-                _catalogueItemsStatus.Add(keyName, status);
-            }
         }
     }
 }

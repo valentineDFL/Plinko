@@ -1,37 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Assets.Scripts.Shop.Music;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Assets.Scripts.Shop.Equip
 {
-    internal class EquipBackground : EquipItem
+    internal class EquipMusic : EquipItem
     {
-        private List<BuyBackground> _itemsForSale = new List<BuyBackground>();
-        
-        public Sprite CurrentSprite { get; private set; }
+        private List<BuyMusic> _itemsForSale = new List<BuyMusic>();
+
+        public AudioClip CurrentMusic { get; private set; }
         private int ChildCount => ItemForSaleFolder.transform.childCount;
 
         private void Start()
         {
             for (int i = 0; i < ChildCount; i++)
             {
-                BuyBackground currentBackground = ItemForSaleFolder.transform.GetChild(i).GetComponent<BuyBackground>();
+                BuyMusic currentBackground = ItemForSaleFolder.transform.GetChild(i).GetComponent<BuyMusic>();
                 _itemsForSale.Add(currentBackground);
             }
 
-            for(int i = 0; i < _itemsForSale.Count; i++)
+            for (int i = 0; i < _itemsForSale.Count; i++)
             {
-               _itemsForSale[i].CurrentBackgroundChanged += Equip;
+                _itemsForSale[i].CurrentMusicChanged += Equip;
             }
 
             InitializeStartupBackground();
 
-            print(CurrentSprite.name);
-            if(CurrentSprite != null)
+            print(CurrentMusic.name);
+            if (CurrentMusic != null)
             {
-                Equip(CurrentSprite);
+                Equip(CurrentMusic);
             }
         }
 
@@ -39,17 +41,17 @@ namespace Assets.Scripts.Shop.Equip
         {
             for (int i = 0; i < _itemsForSale.Count; i++)
             {
-                _itemsForSale[i].CurrentBackgroundChanged -= Equip;
+                _itemsForSale[i].CurrentMusicChanged -= Equip;
             }
         }
 
-        private void Equip(Sprite sprite)
+        private void Equip(AudioClip music)
         {
-            CurrentSprite = sprite;
+            CurrentMusic = music;
 
             for (int i = 0; i < SubscribersForEquip.Count; i++)
             {
-                SubscribersForEquip[i].GetComponent<Image>().sprite = sprite;
+                SubscribersForEquip[i].GetComponent<AudioSource>().clip = music;
             }
         }
 
@@ -58,12 +60,12 @@ namespace Assets.Scripts.Shop.Equip
             if (DataRecorder.CurrentBackground == null)
             {
                 print("Вход произошёл в то что в дата null задний фон");
-                CurrentSprite = SubscribersForEquip[0].GetComponent<Image>().sprite;
-                Equip(CurrentSprite);
+                CurrentMusic = SubscribersForEquip[0].GetComponent<AudioSource>().clip;
+                Equip(CurrentMusic);
             }
             else
             {
-                CurrentSprite = DataRecorder.CurrentBackground;
+                CurrentMusic = DataRecorder.CurrentMusic;
                 print("Вход произошёл в то что в дата задний фон не null" + DataRecorder.CurrentBackground.name);
             }
         }

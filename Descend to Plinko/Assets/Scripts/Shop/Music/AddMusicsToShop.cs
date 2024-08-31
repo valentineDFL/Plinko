@@ -6,10 +6,11 @@ using Assets.Scripts.Shop.InitializePrice;
 using Assets.Scripts.Shop.Equip.EquipVerification;
 using Assets.Scripts.SaveLoad;
 using System.Linq;
+using Assets.Scripts.Shop.SoundShop;
 
-namespace Assets.Scripts.Shop
+namespace Assets.Scripts.Shop.Music
 {
-    internal class AddBackgroundsToShop : AddItemToShop
+    internal class AddMusicsToShop : AddItemToShop
     {
         private void Awake()
         {
@@ -23,9 +24,9 @@ namespace Assets.Scripts.Shop
 
         protected override void AddItems() // 1 +
         {
-            for(int i = 0; i < transform.childCount; i++)
+            for (int i = 0; i < transform.childCount; i++)
             {
-                transform.GetChild(i).AddComponent<BuyBackground>();
+                transform.GetChild(i).AddComponent<BuyMusic>();
             }
         }
 
@@ -33,12 +34,12 @@ namespace Assets.Scripts.Shop
         {
             for (int i = 0; i < transform.childCount; i++)
             {
-                BuyBackground currentChild = transform.GetChild(i).GetComponent<BuyBackground>();
+                BuyMusic currentChild = transform.GetChild(i).GetComponent<BuyMusic>();
                 string currentChildName = currentChild.name;
                 int status = PlayerPrefs.GetInt(currentChildName);
                 long currentPrice = SetItemPrice(i);
 
-                BuyBackground[] backgrounds = InitBackgrounds();
+                BuyMusic[] backgrounds = InitMusics();
 
                 IUseVerification equipStatus = EquipStatus(i, backgrounds);
 
@@ -52,12 +53,12 @@ namespace Assets.Scripts.Shop
             }
         }
 
-        private BuyBackground[] InitBackgrounds() // 3 +
+        private BuyMusic[] InitMusics() // 3 +
         {
-            BuyBackground[] backgrounds = new BuyBackground[transform.childCount];
+            BuyMusic[] backgrounds = new BuyMusic[transform.childCount];
             for (int j = 0; j < transform.childCount; j++)
             {
-                BuyBackground currentBackground = transform.GetChild(j).GetComponent<BuyBackground>();
+                BuyMusic currentBackground = transform.GetChild(j).GetComponent<BuyMusic>();
                 backgrounds[j] = currentBackground;
             }
 
@@ -68,7 +69,7 @@ namespace Assets.Scripts.Shop
         {
             List<ItemForSale> items = new List<ItemForSale>();
 
-            for(int i = 0; i < transform.childCount; i++)
+            for (int i = 0; i < transform.childCount; i++)
             {
                 if (i != flagIndex)
                 {
@@ -79,9 +80,24 @@ namespace Assets.Scripts.Shop
             return new VerificationEquipStatus(items.ToArray());
         }
 
-        private void SetStatus(int status, BuyBackground currentChild, GameObject notEnoughtMoneyPanel, long price, IUseVerification verificationEquipStatus) // 5 +
+        private IUseVerification MusicPlayStatusEquip(int flagIndex, PlayDemoSound[] itemsForSale)
         {
-            if(status == 0)
+            List<PlayDemoSound> items = new List<PlayDemoSound>();
+
+            for (int i = 0; i < transform.childCount; i++)
+            {
+                if (i != flagIndex)
+                {
+                    items.Add(itemsForSale[i]);
+                }
+            }
+
+            return new VerificationPlayedStatus(items.ToArray());
+        }
+
+        private void SetStatus(int status, BuyMusic currentChild, GameObject notEnoughtMoneyPanel, long price, IUseVerification verificationEquipStatus) // 5 +
+        {
+            if (status == 0)
             {
                 currentChild.Init(false, Bank, notEnoughtMoneyPanel, price, verificationEquipStatus);
                 return;

@@ -1,23 +1,24 @@
-﻿using Assets.Scripts.Gold;
-using Assets.Scripts.JsonSaver;
-using Assets.Scripts.Shop;
-using Assets.Scripts.Shop.Equip;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Assets.Scripts.Gold;
+using Assets.Scripts.JsonSaver;
+using Assets.Scripts.Shop;
 
 namespace Assets.Scripts.SaveLoad
 {
     internal class DataRecorder : MonoBehaviour
     {
         [SerializeField] private Bank _bank;
-        [SerializeField] private AddBackgroundsToShop _backgroundsFolder;
-        private List<BuyBackground> _buyBackgrounds;
+        [SerializeField] private List<AddItemToShop> _itemsCatalogue;
 
-
+        private int CatalogueCount => _itemsCatalogue.Count;
+        
         [SerializeField] private long _gold;
         [SerializeField] private Image _image;
         [SerializeField] private AudioSource _audioSource;
+
         private Sprite _currentBackground;
         private AudioClip _currentMusic;
 
@@ -25,20 +26,15 @@ namespace Assets.Scripts.SaveLoad
         private JsonDataSaver _jsonDataSaver;
         private Data _data;
 
-        private Dictionary<string, bool> _catalogueItemsStatus = new Dictionary<string, bool>();
-
         public long Gold => _gold;
         public Sprite CurrentBackground => _currentBackground;
         public AudioClip CurrentMusic => _currentMusic;
 
-        public IReadOnlyDictionary<string, bool> CatalogueItemsStatus => (Dictionary<string, bool>)_catalogueItemsStatus;
 
         private void Awake()
         {
-            _currentMusic = _audioSource.clip;
-
-            _jsonDataLoader = new JsonDataLoader(_gold, _currentBackground, _currentMusic, _catalogueItemsStatus);
-            _data = _jsonDataLoader.Load();
+            _jsonDataLoader = new JsonDataLoader();
+            _data = _jsonDataLoader.Load(0, null, null);
 
             if(_data != null)
             {
@@ -49,47 +45,61 @@ namespace Assets.Scripts.SaveLoad
                 _currentBackground = _image.sprite;
             }
 
-
             _gold = _data.Gold;
             _currentBackground = _data.CurrentBackground;
             _currentMusic = _data.CurrentMusic;
-            _catalogueItemsStatus = _data.CatalogueItemsStatus;
-
-            print("goldOnLoad: " + _data.CurrentBackground);
         }
 
         private void Start()
         {
-            Subscribe();
+            ChangeCurrentBackgroundSubscribe();
             _bank.GoldIncreased += _data.SetGold;
         }
 
         private void OnDisable()
         {
             _bank.GoldIncreased -= _data.SetGold;
-
             _jsonDataSaver = new JsonDataSaver();
-            print("goldOnDisable: " + _data.Gold);
             _jsonDataSaver.DataSave(_data);
 
-            Describe();
+            //PlayerPrefs.DeleteAll();
+            ChangeCurrentBackgroundDescribe();
         }
 
-        private void Subscribe()
+        private void ChangeCurrentBackgroundSubscribe()
         {
-            for(int i = 0; i < _backgroundsFolder.gameObject.transform.childCount; i++)
+            if (CatalogueCount != 0)
             {
-                _backgroundsFolder.gameObject.transform.GetChild(i).GetComponent<BuyBackground>().CurrentBackgroundChanged += _data.ChangeCurrentBackground;
+                for (int i = 0; i < CatalogueCount; i++)
+                {
+                    for (int j = 0; j < _itemsCatalogue[i].transform.childCount; j++)
+                    {
+                        _itemsCatalogue[i].gameObject.transform.GetChild(j).GetComponent<BuyBackground>().CurrentBackgroundChanged += _data.ChangeCurrentBackground;
+                    }
+                }
             }
+            else
+                throw new ArgumentNullException("В DataRecorder AddFolder 0");
         }
 
-        private void Describe()
+        private void ChangeCurrentBackgroundDescribe()
         {
-            print("Попытка отписки");
-            for (int i = 0; i < _backgroundsFolder.gameObject.transform.childCount; i++)
+            if(_itemsCatalogue != null && CatalogueCount != 0)
             {
-                _backgroundsFolder.gameObject.transform.GetChild(i).GetComponent<BuyBackground>().CurrentBackgroundChanged -= _data.ChangeCurrentBackground;
+                for (int i = 0; i < CatalogueCount; i++)
+                {
+                    if(_itemsCatalogue[i] != null)
+                    {
+                        for (int j = 0; j < _itemsCatalogue[i].transform.childCount; j++)
+                        {
+                            _itemsCatalogue[i].gameObject.transform.GetChild(j).GetComponent<BuyBackground>().CurrentBackgroundChanged -= _data.ChangeCurrentBackground;
+                        }
+                    }
+                }
             }
+            else
+                throw new ArgumentNullException("В DataRecorder AddFolder Null");
+
         }
     }
 }

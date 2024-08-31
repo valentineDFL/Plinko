@@ -8,10 +8,10 @@ using UnityEngine;
 
 namespace Assets.Scripts.Shop.Equip
 {
-    internal abstract class Equip : MonoBehaviour
+    internal abstract class EquipItem : MonoBehaviour
     {
-        [SerializeField] protected DataRecorder DataRecorder;
         [SerializeField] protected List<GameObject> SubscribersForEquip = new List<GameObject>();
+        [SerializeField] protected DataRecorder DataRecorder;
         [SerializeField] protected AddItemToShop ItemForSaleFolder;
     }
 }

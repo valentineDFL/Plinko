@@ -1,32 +1,31 @@
-﻿using Assets.Scripts.Gold;
-using Assets.Scripts.Shop.Equip;
-using System;
-using TMPro;
+﻿using System;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+using Assets.Scripts.Gold;
+using Assets.Scripts.Shop.Equip;
+using Assets.Scripts.Shop.Equip.EquipVerification;
 
 namespace Assets.Scripts.Shop
 {
     internal class BuyBackground : ItemForSale
     {
-        public override event Action<long> ItemBuyed;
+        public override event Action<long> PurchaseCharged;
         public event Action<Sprite> CurrentBackgroundChanged;
 
         private Sprite _background;
         private TextMeshProUGUI _priceTag;
-
+        
         private void Awake()
         {
             _priceTag = GetComponentInChildren<TextMeshProUGUI>();
             _background = GetComponent<Image>().sprite;
         }
 
-        public override void Init(bool buyingState, Bank bank, GameObject notEnoughtMoneyPanel, long price)
+        private void Start()
         {
-            IsBuying = buyingState;
-            Bank = bank;
-            NotEnoughtMoneyPanel = notEnoughtMoneyPanel;
-            Price = price;
+            SavedStatus = PlayerPrefs.GetInt(this.name);
+            SaveStatus.LoadStatusText(this.name + typeof(ItemForSale), _priceTag);
         }
 
         private void OnEnable()
@@ -38,11 +37,14 @@ namespace Assets.Scripts.Shop
         private void OnDisable()
         {
             _button.onClick.RemoveAllListeners();
+
+            SaveStatus.SaveBool(SavedStatus, this.name);
+
+            SaveStatus.SaveStatusText(this.name + typeof(ItemForSale), _priceTag.text);
         }
 
         protected override void BuyItem()
         {
-            print("item: " + this.gameObject.name + " - " + IsBuying);
             if (IsBuying == true)
             {
                 EquipBuyedItem();
@@ -51,11 +53,7 @@ namespace Assets.Scripts.Shop
             {
                 if (Price <= Bank.Gold)
                 {
-                    _priceTag.text = Keys.Owned;
-                    IsBuying = true;
-                    // отправить в логи статус покупки, добавить в текст статус куплено
-                    print("Я купил предмет");
-                    ItemBuyed?.Invoke(Price);
+                    Buy();
                 }
                 else
                 {
@@ -71,7 +69,21 @@ namespace Assets.Scripts.Shop
             {
                 _priceTag.text = Keys.Used;
                 CurrentBackgroundChanged?.Invoke(_background);
+                VerificationEquipStatus.UnUse();
             }
+        }
+
+        public override void UnEquipBuyedItem()
+        {
+            _priceTag.text = Keys.Owned;
+        }
+
+        private void Buy()
+        {
+            SavedStatus = 1;
+            _priceTag.text = Keys.Owned;
+            IsBuying = true;
+            PurchaseCharged?.Invoke(Price);
         }
     }
 }

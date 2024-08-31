@@ -19,17 +19,16 @@ namespace Assets.Scripts.Gold
 
         private void Awake()
         {
-            _gold = 140000; //_loadGold.Gold;
+            _gold = 900000; //_loadGold.Gold;
         }
 
         private void Start()
         {
-
             InitItems();
 
             for (int i = 0; i < _itemsForSaleSubscribers.Count; i++)
             {
-                _itemsForSaleSubscribers[i].ItemBuyed += BuyItem;
+                _itemsForSaleSubscribers[i].PurchaseCharged += BuyItem;
             }
         }
 
@@ -37,7 +36,7 @@ namespace Assets.Scripts.Gold
         {
             for (int i = 0; i < _itemsForSaleSubscribers.Count; i++)
             {
-                _itemsForSaleSubscribers[i].ItemBuyed -= BuyItem;
+                _itemsForSaleSubscribers[i].PurchaseCharged -= BuyItem;
             }
         }
 

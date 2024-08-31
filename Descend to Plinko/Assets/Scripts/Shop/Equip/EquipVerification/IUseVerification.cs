@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Assets.Scripts.Shop.Music
+namespace Assets.Scripts.Shop.Equip.EquipVerification
 {
-    internal class AddMusicToShop
+    internal interface IUseVerification
     {
+        public void UnUse();
     }
 }
