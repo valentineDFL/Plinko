@@ -11,12 +11,12 @@ public class GoldCount : MonoBehaviour
 
     private void OnEnable()
     {
-        _bank.GoldIncreased += SetGoldCount;
+        _bank.GoldDecreased += SetGoldCount;
     }
 
     private void OnDisable()
     {
-        _bank.GoldIncreased -= SetGoldCount;
+        _bank.GoldDecreased -= SetGoldCount;
     }
 
     private void Start()

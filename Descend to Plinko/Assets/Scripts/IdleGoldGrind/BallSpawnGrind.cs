@@ -12,6 +12,5 @@ namespace Assets.Scripts.IdleGoldGrind
         public abstract event Action<long> BallInTimeAdded;
 
         protected abstract void BallSpawn();
-
     }
 }

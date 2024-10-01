@@ -3,27 +3,21 @@ using Assets.Scripts.Shop.Equip;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Assets.Scripts.Shop.Product;
 
 namespace Assets.Scripts.Shop.Music
 {
-    internal class BuyMusic : ItemForSale
+    internal class BuyMusic : ProductForSale
     {
-        public override event Action<long> PurchaseCharged;
+        public override event Func<long, bool> PurchaseCharged;
         public event Action<AudioClip> CurrentMusicChanged;
 
         private AudioClip _music;
-        private TextMeshProUGUI _priceTag;
 
         private void Awake()
         {
-            _priceTag = GetComponentInChildren<TextMeshProUGUI>();
+            PriceTag = GetComponentInChildren<TextMeshProUGUI>();
             _music = GetComponent<AudioSource>().clip;
-        }
-
-        private void Start()
-        {
-            SavedStatus = PlayerPrefs.GetInt(this.name);
-            SaveStatus.LoadStatusText(this.name + typeof(ItemForSale), _priceTag);
         }
 
         private void OnEnable()
@@ -36,20 +30,20 @@ namespace Assets.Scripts.Shop.Music
         {
             _button.onClick.RemoveAllListeners();
 
-            SaveStatus.SaveBool(SavedStatus, this.name);
+            SaveStatus.SaveStatus(IsBuying, this.Key);
 
-            SaveStatus.SaveStatusText(this.name + typeof(ItemForSale), _priceTag.text);
+            SaveStatus.SaveStatusText(this.TextKey, PriceTag.text);
         }
 
         protected override void BuyItem()
         {
             if (IsBuying == true)
             {
-                EquipBuyedItem();
+                MarkAsUsed();
             }
             else
             {
-                if (Price <= Bank.Gold)
+                if (PurchaseCharged.Invoke(Price))
                 {
                     Buy();
                 }
@@ -60,28 +54,27 @@ namespace Assets.Scripts.Shop.Music
             }
         }
 
-        protected override void EquipBuyedItem()
+        protected override void MarkAsUsed()
         {
-            AudioClip currentMusic = GetComponentInParent<EquipMusic>().CurrentMusic;
-            if (currentMusic != _music)
+            AudioClip audioClip = GetComponentInParent<EquipMusic>().CurrentMusic;
+            if(audioClip != _music)
             {
-                _priceTag.text = Keys.Used;
+
+                PriceTag.text = Keys.Used;
                 CurrentMusicChanged?.Invoke(_music);
                 VerificationEquipStatus.UnUse();
             }
         }
 
-        public override void UnEquipBuyedItem()
+        public override void MarkAsOwned()
         {
-            _priceTag.text = Keys.Owned;
+            PriceTag.text = Keys.Owned;
         }
 
         private void Buy()
         {
-            SavedStatus = 1;
-            _priceTag.text = Keys.Owned;
+            PriceTag.text = Keys.Owned;
             IsBuying = true;
-            PurchaseCharged?.Invoke(Price);
         }
     }
 }

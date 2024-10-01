@@ -10,63 +10,65 @@ namespace Assets.Scripts.Shop.Equip
 {
     internal class EquipMusic : EquipItem
     {
-        private List<BuyMusic> _itemsForSale = new List<BuyMusic>();
+        public event Action<AudioClip> CurrentMusicChanged;
 
-        public AudioClip CurrentMusic { get; private set; }
+        [SerializeField] private List<AudioSource> _subscribersForEquip = new List<AudioSource>();
+        private List<BuyMusic> _musicItemsForSale = new List<BuyMusic>();
+
+        public AudioClip CurrentMusic;
         private int ChildCount => ItemForSaleFolder.transform.childCount;
+
+        public IReadOnlyList<AudioSource> Subscribers => _subscribersForEquip;
 
         private void Start()
         {
             for (int i = 0; i < ChildCount; i++)
             {
-                BuyMusic currentBackground = ItemForSaleFolder.transform.GetChild(i).GetComponent<BuyMusic>();
-                _itemsForSale.Add(currentBackground);
+                BuyMusic currentMusic = ItemForSaleFolder.transform.GetChild(i).GetComponent<BuyMusic>();
+                _musicItemsForSale.Add(currentMusic);
             }
 
-            for (int i = 0; i < _itemsForSale.Count; i++)
+            for (int i = 0; i < _musicItemsForSale.Count; i++)
             {
-                _itemsForSale[i].CurrentMusicChanged += Equip;
+                _musicItemsForSale[i].CurrentMusicChanged += Equip;
             }
 
-            InitializeStartupBackground();
-
-            print(CurrentMusic.name);
-            if (CurrentMusic != null)
-            {
-                Equip(CurrentMusic);
-            }
+            InitializeStartupMusic();
         }
 
-        private void OnDisable()
+        private void OnDestroy()
         {
-            for (int i = 0; i < _itemsForSale.Count; i++)
+            for (int i = 0; i < _musicItemsForSale.Count; i++)
             {
-                _itemsForSale[i].CurrentMusicChanged -= Equip;
+                _musicItemsForSale[i].CurrentMusicChanged -= Equip;
             }
         }
 
-        private void Equip(AudioClip music)
+        private async void Equip(AudioClip music)
         {
             CurrentMusic = music;
+            CurrentMusicChanged?.Invoke(CurrentMusic);
 
-            for (int i = 0; i < SubscribersForEquip.Count; i++)
+            for (int i = 0; i < _subscribersForEquip.Count; i++)
             {
-                SubscribersForEquip[i].GetComponent<AudioSource>().clip = music;
+                AudioSource audioSource = _subscribersForEquip[i];
+                audioSource.clip = music;
+                await Task.Delay(1300);
+                audioSource.Play();
             }
         }
 
-        private void InitializeStartupBackground()
+        private void InitializeStartupMusic()
         {
-            if (DataRecorder.CurrentBackground == null)
+            if (DataRecorder.CurrentMusic == null)
             {
-                print("Вход произошёл в то что в дата null задний фон");
-                CurrentMusic = SubscribersForEquip[0].GetComponent<AudioSource>().clip;
-                Equip(CurrentMusic);
+                print("Вход произошёл в то что в дата null музыка");
+                Equip(_subscribersForEquip[0].clip);
             }
             else
             {
-                CurrentMusic = DataRecorder.CurrentMusic;
-                print("Вход произошёл в то что в дата задний фон не null" + DataRecorder.CurrentBackground.name);
+                print("Вход произошёл в то что в дата музыка не null" + DataRecorder.CurrentMusic.name);
+                Equip(DataRecorder.CurrentMusic);
             }
         }
     }

@@ -1,7 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 namespace Assets
 {
@@ -29,8 +29,10 @@ namespace Assets
             gameObject.SetActive(true);
         }
 
-        public void ClosePanel()
+        public async void ClosePanel(AudioSource audioSource)
         {
+            audioSource.Play();
+            await Task.Delay((int)(audioSource.clip.length * 1000));
             gameObject.SetActive(false);
         }
 
@@ -43,7 +45,7 @@ namespace Assets
         public void ClosePausePanel()
         {
             Time.timeScale = 1;
-            ClosePanel();
+            gameObject.SetActive(false);
         }
 
         public void ExitApplication()

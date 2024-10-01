@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using Assets.Scripts.Shop.Product;
 
 namespace Assets.Scripts.Shop.Equip
 {
     internal abstract class EquipItem : MonoBehaviour
     {
-        [SerializeField] protected List<GameObject> SubscribersForEquip = new List<GameObject>();
         [SerializeField] protected DataRecorder DataRecorder;
-        [SerializeField] protected AddItemToShop ItemForSaleFolder;
+        [SerializeField] protected ProductAdder ItemForSaleFolder;
     }
 }

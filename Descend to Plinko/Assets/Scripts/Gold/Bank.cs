@@ -3,32 +3,41 @@ using UnityEngine;
 using Assets.Scripts.Shop;
 using System;
 using Assets.Scripts.SaveLoad;
+using Assets.Scripts.Shop.Spawner;
+using Assets.Scripts.Shop.Product;
 
 namespace Assets.Scripts.Gold
 {
-    internal class Bank : MonoBehaviour
+    public class Bank : MonoBehaviour
     {
-        public event Action<long> GoldIncreased;
+        public event Action<long> GoldDecreased;
 
         [SerializeField] private DataRecorder _loadGold;
-        [SerializeField] private List<AddItemToShop> _itemForSaleFolder = new List<AddItemToShop>();
-        private List<ItemForSale> _itemsForSaleSubscribers = new List<ItemForSale>();
+        [SerializeField] private List<ProductAdder> _itemForSaleFolder = new List<ProductAdder>();
+        private List<ProductForSale> _itemsForSaleSubscribers = new List<ProductForSale>();
         
         private long _gold;
         public long Gold => _gold;
 
         private void Awake()
         {
-            _gold = 900000; //_loadGold.Gold;
+            _gold = _loadGold.Gold;
         }
 
         private void Start()
         {
             InitItems();
-
             for (int i = 0; i < _itemsForSaleSubscribers.Count; i++)
             {
                 _itemsForSaleSubscribers[i].PurchaseCharged += BuyItem;
+            }
+
+            for(int j = 0; j < _itemsForSaleSubscribers.Count; j++)
+            {
+                if (_itemsForSaleSubscribers[j].TryGetComponent<SpawnerModel>(out SpawnerModel model))
+                {
+                    model.PurchaseCharged += BuyItem;
+                }
             }
         }
 
@@ -37,6 +46,14 @@ namespace Assets.Scripts.Gold
             for (int i = 0; i < _itemsForSaleSubscribers.Count; i++)
             {
                 _itemsForSaleSubscribers[i].PurchaseCharged -= BuyItem;
+            }
+
+            for (int j = 0; j < _itemsForSaleSubscribers.Count; j++)
+            {
+                if (_itemsForSaleSubscribers[j] != null && _itemsForSaleSubscribers[j].TryGetComponent<SpawnerModel>(out SpawnerModel model))
+                {
+                    model.PurchaseCharged -= BuyItem;
+                }
             }
         }
 
@@ -47,16 +64,24 @@ namespace Assets.Scripts.Gold
                 for(int j = 0; j < _itemForSaleFolder[i].transform.childCount; j++)
                 {
                     GameObject currentGameObjectInFolder = _itemForSaleFolder[i].transform.GetChild(j).gameObject;
-                    currentGameObjectInFolder.TryGetComponent<ItemForSale>(out ItemForSale currentItemForSale);
+                    currentGameObjectInFolder.TryGetComponent<ProductForSale>(out ProductForSale currentItemForSale);
                     _itemsForSaleSubscribers.Add(currentItemForSale);
                 }
             }
         }
 
-        private void BuyItem(long increaseGold)
+        private bool BuyItem(long goldCount)
         {
-            _gold -= increaseGold;
-            GoldIncreased?.Invoke(_gold);
+            if(TryBuyItem(goldCount))
+            {
+                _gold -= goldCount;
+                GoldDecreased?.Invoke(_gold);
+                return true;
+            }
+            
+            return false;
         }
+
+        private bool TryBuyItem(long gold) => _gold - gold >= 0;
     }
 }

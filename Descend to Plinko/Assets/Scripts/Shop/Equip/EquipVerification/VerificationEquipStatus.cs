@@ -1,14 +1,12 @@
-﻿using System;
-using UnityEngine;
+﻿using Assets.Scripts.Shop.Product;
 
 namespace Assets.Scripts.Shop.Equip.EquipVerification
 {
     internal class VerificationEquipStatus : IUseVerification
     {
-        private bool _isEquipped;
-        private ItemForSale[] _itemsForUnEquip;
+        private ProductForSale[] _itemsForUnEquip;
 
-        public VerificationEquipStatus(ItemForSale[] itemsForSale)
+        public VerificationEquipStatus(ProductForSale[] itemsForSale)
         {
             _itemsForUnEquip = itemsForSale;
         }
@@ -19,8 +17,7 @@ namespace Assets.Scripts.Shop.Equip.EquipVerification
             {
                 if (_itemsForUnEquip[i].IsBuying)
                 {
-                    _itemsForUnEquip[i].UnEquipBuyedItem();
-                    Debug.Log(_itemsForUnEquip[i].name);
+                    _itemsForUnEquip[i].MarkAsOwned();
                 }
             }
         }

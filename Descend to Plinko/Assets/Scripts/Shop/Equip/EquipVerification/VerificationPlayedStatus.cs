@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Assets.Scripts.Shop.SoundShop;
+using UnityEngine;
 
 namespace Assets.Scripts.Shop.Equip.EquipVerification
 {
@@ -18,11 +19,11 @@ namespace Assets.Scripts.Shop.Equip.EquipVerification
 
         public void UnUse()
         {
-            for(int i = 0; i < _sounds.Length; i++)
+            for (int j = 0; j < _sounds.Length; j++)
             {
-                if (_sounds[i].IsPlaying)
+                if (_sounds[j].IsPlaying)
                 {
-
+                    _sounds[j].SwitchPlaying();
                 }
             }
         }

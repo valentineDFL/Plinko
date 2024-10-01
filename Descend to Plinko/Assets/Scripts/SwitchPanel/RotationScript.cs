@@ -4,13 +4,21 @@ using UnityEngine;
 
 public class RotationScript : MonoBehaviour
 {
-    [SerializeField] private float radius;
-    float angle = 0;
+    [SerializeField] private float _radius;
+    [SerializeField] private float _angle = 0;
+
+    [SerializeField] private float _multipluyerCoff;
+    private Vector2 _position;
+
+    private void Awake()
+    {
+        _position = transform.position;
+    }
 
     private void Update()
     {
-        angle += 7f * Time.deltaTime;
-        this.transform.position = new Vector3(Mathf.Cos(angle) * radius, Mathf.Sin(angle)* radius);
+        _angle += _multipluyerCoff * Time.deltaTime;
+        this.transform.position = new Vector3(_position.x + Mathf.Cos(_angle) * _radius, _position.y + Mathf.Sin(_angle) * _radius);
         
     }
 }

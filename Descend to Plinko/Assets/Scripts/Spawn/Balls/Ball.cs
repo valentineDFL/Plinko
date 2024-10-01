@@ -2,7 +2,7 @@
 
 namespace Assets.Scripts
 {
-    internal abstract class Ball : MonoBehaviour
+    public abstract class Ball : MonoBehaviour
     {
         [SerializeField] protected int _point;
         [SerializeField] protected int _index;

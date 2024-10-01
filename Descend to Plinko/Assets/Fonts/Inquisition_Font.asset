@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
   m_Name: Inquisition_Font
   m_EditorClassIdentifier: 
-  hashCode: 1304156989
+  hashCode: 579058112
   material: {fileID: 4456105859490366431}
-  materialHashCode: -986481667
+  materialHashCode: 410597856
   m_Version: 1.1.0
   m_SourceFontFileGUID: b4a8bad8abd136f40b2ba18024d49624
   m_SourceFontFile_EditorRef: {fileID: 12800000, guid: b4a8bad8abd136f40b2ba18024d49624, type: 3}

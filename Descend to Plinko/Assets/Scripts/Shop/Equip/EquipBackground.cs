@@ -8,8 +8,11 @@ namespace Assets.Scripts.Shop.Equip
 {
     internal class EquipBackground : EquipItem
     {
-        private List<BuyBackground> _itemsForSale = new List<BuyBackground>();
-        
+        public event Action<Sprite> CurrentBackgroundChanged;
+
+        [SerializeField] private List<Image> _subscribersForEquip = new List<Image>();
+        private List<BuyBackground> _backgroundItemsForSale = new List<BuyBackground>();
+
         public Sprite CurrentSprite { get; private set; }
         private int ChildCount => ItemForSaleFolder.transform.childCount;
 
@@ -18,38 +21,33 @@ namespace Assets.Scripts.Shop.Equip
             for (int i = 0; i < ChildCount; i++)
             {
                 BuyBackground currentBackground = ItemForSaleFolder.transform.GetChild(i).GetComponent<BuyBackground>();
-                _itemsForSale.Add(currentBackground);
+                _backgroundItemsForSale.Add(currentBackground);
             }
 
-            for(int i = 0; i < _itemsForSale.Count; i++)
+            for(int i = 0; i < _backgroundItemsForSale.Count; i++)
             {
-               _itemsForSale[i].CurrentBackgroundChanged += Equip;
+                _backgroundItemsForSale[i].CurrentBackgroundChanged += Equip;
             }
 
             InitializeStartupBackground();
-
-            print(CurrentSprite.name);
-            if(CurrentSprite != null)
-            {
-                Equip(CurrentSprite);
-            }
         }
 
-        private void OnDisable()
+        private void OnDestroy()
         {
-            for (int i = 0; i < _itemsForSale.Count; i++)
+            for (int i = 0; i < _backgroundItemsForSale.Count; i++)
             {
-                _itemsForSale[i].CurrentBackgroundChanged -= Equip;
+                _backgroundItemsForSale[i].CurrentBackgroundChanged -= Equip;
             }
         }
 
         private void Equip(Sprite sprite)
         {
             CurrentSprite = sprite;
+            CurrentBackgroundChanged?.Invoke(CurrentSprite);
 
-            for (int i = 0; i < SubscribersForEquip.Count; i++)
+            for (int i = 0; i < _subscribersForEquip.Count; i++)
             {
-                SubscribersForEquip[i].GetComponent<Image>().sprite = sprite;
+                _subscribersForEquip[i].sprite = sprite;
             }
         }
 
@@ -58,13 +56,12 @@ namespace Assets.Scripts.Shop.Equip
             if (DataRecorder.CurrentBackground == null)
             {
                 print("Вход произошёл в то что в дата null задний фон");
-                CurrentSprite = SubscribersForEquip[0].GetComponent<Image>().sprite;
-                Equip(CurrentSprite);
+                Equip(_subscribersForEquip[0].sprite);
             }
             else
             {
-                CurrentSprite = DataRecorder.CurrentBackground;
-                print("Вход произошёл в то что в дата задний фон не null" + DataRecorder.CurrentBackground.name);
+                print("Вход произошёл в то что в дата задний фон не null " + DataRecorder.CurrentBackground.name);
+                Equip(DataRecorder.CurrentBackground);
             }
         }
     }

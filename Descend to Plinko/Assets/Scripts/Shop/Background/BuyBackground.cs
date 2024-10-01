@@ -5,27 +5,21 @@ using TMPro;
 using Assets.Scripts.Gold;
 using Assets.Scripts.Shop.Equip;
 using Assets.Scripts.Shop.Equip.EquipVerification;
+using Assets.Scripts.Shop.Product;
 
 namespace Assets.Scripts.Shop
 {
-    internal class BuyBackground : ItemForSale
+    internal class BuyBackground : ProductForSale
     {
-        public override event Action<long> PurchaseCharged;
+        public override event Func<long, bool> PurchaseCharged;
         public event Action<Sprite> CurrentBackgroundChanged;
 
         private Sprite _background;
-        private TextMeshProUGUI _priceTag;
         
         private void Awake()
         {
-            _priceTag = GetComponentInChildren<TextMeshProUGUI>();
+            PriceTag = GetComponentInChildren<TextMeshProUGUI>();
             _background = GetComponent<Image>().sprite;
-        }
-
-        private void Start()
-        {
-            SavedStatus = PlayerPrefs.GetInt(this.name);
-            SaveStatus.LoadStatusText(this.name + typeof(ItemForSale), _priceTag);
         }
 
         private void OnEnable()
@@ -38,20 +32,20 @@ namespace Assets.Scripts.Shop
         {
             _button.onClick.RemoveAllListeners();
 
-            SaveStatus.SaveBool(SavedStatus, this.name);
+            SaveStatus.SaveStatus(IsBuying, this.Key);
 
-            SaveStatus.SaveStatusText(this.name + typeof(ItemForSale), _priceTag.text);
+            SaveStatus.SaveStatusText(this.TextKey, PriceTag.text);
         }
 
         protected override void BuyItem()
         {
             if (IsBuying == true)
             {
-                EquipBuyedItem();
+                MarkAsUsed();
             }
             else
             {
-                if (Price <= Bank.Gold)
+                if (PurchaseCharged.Invoke(Price))
                 {
                     Buy();
                 }
@@ -62,28 +56,26 @@ namespace Assets.Scripts.Shop
             }
         }
 
-        protected override void EquipBuyedItem()
+        protected override void MarkAsUsed()
         {
             Sprite currentBackground = GetComponentInParent<EquipBackground>().CurrentSprite;
             if (currentBackground != _background)
             {
-                _priceTag.text = Keys.Used;
+                PriceTag.text = Keys.Used;
                 CurrentBackgroundChanged?.Invoke(_background);
                 VerificationEquipStatus.UnUse();
             }
         }
 
-        public override void UnEquipBuyedItem()
+        public override void MarkAsOwned()
         {
-            _priceTag.text = Keys.Owned;
+            PriceTag.text = Keys.Owned;
         }
 
         private void Buy()
         {
-            SavedStatus = 1;
-            _priceTag.text = Keys.Owned;
             IsBuying = true;
-            PurchaseCharged?.Invoke(Price);
+            PriceTag.text = Keys.Owned;
         }
     }
 }

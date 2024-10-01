@@ -1,105 +1,93 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
 using Assets.Scripts.Gold;
 using Assets.Scripts.JsonSaver;
 using Assets.Scripts.Shop;
+using Assets.Scripts.Shop.Equip;
+using Assets.Scripts.Shop.Music;
+using Assets.Scripts.Shop.Product;
+using Assets.Scripts.Shop.Spawner;
+using UnityEngine;
 
 namespace Assets.Scripts.SaveLoad
 {
-    internal class DataRecorder : MonoBehaviour
+    public class DataRecorder : MonoBehaviour
     {
         [SerializeField] private Bank _bank;
-        [SerializeField] private List<AddItemToShop> _itemsCatalogue;
+        [SerializeField] private List<Spawner> _spawners;
+        [SerializeField] private List<EquipItem> _itemsForEquip;
 
-        private int CatalogueCount => _itemsCatalogue.Count;
+        private SpawnerDataLoaderAndSaver _spawnerDataLoaderAndSaver = new SpawnerDataLoaderAndSaver();
         
-        [SerializeField] private long _gold;
-        [SerializeField] private Image _image;
-        [SerializeField] private AudioSource _audioSource;
-
-        private Sprite _currentBackground;
-        private AudioClip _currentMusic;
-
-        private JsonDataLoader _jsonDataLoader;
-        private JsonDataSaver _jsonDataSaver;
         private Data _data;
+        private DataSaverAndLoader _dataSaver = new DataSaverAndLoader();
 
-        public long Gold => _gold;
-        public Sprite CurrentBackground => _currentBackground;
-        public AudioClip CurrentMusic => _currentMusic;
-
+        public Sprite CurrentBackground => _data.CurrentBackground;
+        public AudioClip CurrentMusic => _data.CurrentMusic;
+        public long Gold => _data.Gold;
 
         private void Awake()
         {
-            _jsonDataLoader = new JsonDataLoader();
-            _data = _jsonDataLoader.Load(0, null, null);
+            _data = _dataSaver.Load();
+            _spawnerDataLoaderAndSaver.LoadSpawnersData(_spawners, _data);
 
-            if(_data != null)
-            {
-                _currentBackground = _data.CurrentBackground;
-            }
-            else
-            {
-                _currentBackground = _image.sprite;
-            }
 
-            _gold = _data.Gold;
-            _currentBackground = _data.CurrentBackground;
-            _currentMusic = _data.CurrentMusic;
+            print($"{_data.CurrentBackground}\n{_data.CurrentMusic}\n{_data.Gold}");
+        }
+
+        private void OnEnable()
+        {
+            for (int i = 0; i < _itemsForEquip.Count; i++)
+            {
+                if (_itemsForEquip[i] is EquipBackground)
+                {
+                    EquipBackground equip = (EquipBackground)_itemsForEquip[i];
+                    equip.CurrentBackgroundChanged += _data.ChangeCurrentBackground;
+
+                    continue;
+                }
+
+                if (_itemsForEquip[i] is EquipMusic)
+                {
+                    EquipMusic equip = (EquipMusic)_itemsForEquip[i];
+                    equip.CurrentMusicChanged += _data.ChangeCurrentMusic;
+
+                    continue;
+                }
+            }
         }
 
         private void Start()
         {
-            ChangeCurrentBackgroundSubscribe();
-            _bank.GoldIncreased += _data.SetGold;
+            _bank.GoldDecreased += _data.SetGold;
         }
 
         private void OnDisable()
         {
-            _bank.GoldIncreased -= _data.SetGold;
-            _jsonDataSaver = new JsonDataSaver();
-            _jsonDataSaver.DataSave(_data);
+            _spawnerDataLoaderAndSaver.SaveSpawnersData(_spawners, _data);
+            //_dataSaver.Save(_data);
+            PlayerPrefs.DeleteAll();
 
-            //PlayerPrefs.DeleteAll();
-            ChangeCurrentBackgroundDescribe();
-        }
+            _bank.GoldDecreased -= _data.SetGold;
 
-        private void ChangeCurrentBackgroundSubscribe()
-        {
-            if (CatalogueCount != 0)
+            for (int i = 0; i < _itemsForEquip.Count; i++)
             {
-                for (int i = 0; i < CatalogueCount; i++)
+                if (_itemsForEquip[i] is EquipBackground)
                 {
-                    for (int j = 0; j < _itemsCatalogue[i].transform.childCount; j++)
-                    {
-                        _itemsCatalogue[i].gameObject.transform.GetChild(j).GetComponent<BuyBackground>().CurrentBackgroundChanged += _data.ChangeCurrentBackground;
-                    }
+                    EquipBackground equip = (EquipBackground)_itemsForEquip[i];
+                    equip.CurrentBackgroundChanged += _data.ChangeCurrentBackground;
+
+                    continue;
+                }
+
+                if (_itemsForEquip[i] is EquipMusic)
+                {
+                    EquipMusic equip = (EquipMusic)_itemsForEquip[i];
+                    equip.CurrentMusicChanged += _data.ChangeCurrentMusic;
+
+                    continue;
                 }
             }
-            else
-                throw new ArgumentNullException("В DataRecorder AddFolder 0");
-        }
-
-        private void ChangeCurrentBackgroundDescribe()
-        {
-            if(_itemsCatalogue != null && CatalogueCount != 0)
-            {
-                for (int i = 0; i < CatalogueCount; i++)
-                {
-                    if(_itemsCatalogue[i] != null)
-                    {
-                        for (int j = 0; j < _itemsCatalogue[i].transform.childCount; j++)
-                        {
-                            _itemsCatalogue[i].gameObject.transform.GetChild(j).GetComponent<BuyBackground>().CurrentBackgroundChanged -= _data.ChangeCurrentBackground;
-                        }
-                    }
-                }
-            }
-            else
-                throw new ArgumentNullException("В DataRecorder AddFolder Null");
-
         }
     }
 }

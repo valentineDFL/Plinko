@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1aa12fc18155cb245aaf8314155bc41f, type: 3}
+  m_Name: RedSpawner
+  m_EditorClassIdentifier: 
+  _spawnerSpawnArrow: {fileID: 21300000, guid: d1bde2fb14512814c9a8de60b554e225, type: 3}
+  _spawnerBall: {fileID: 2800618263371296878, guid: 1d0a0f0ff6ebd424db510aed706bf767, type: 3}
+  _creationTime: 180
+  _spawnerCapacityCount: 10
+  _spawnerCapacityUpgradePrice: 40
+  _creationTimeUpgradePrice: 90
+  _creationTimeLvl: 1
+  _spawnerCapacityLvl: 1
+  _isBuying: 0
