@@ -9,19 +9,12 @@ namespace Assets.Scripts.Shop.Spawner
 
         [SerializeField] private Spawner _spawner;
 
-        private BuySpawner _buySpawner;
-
         public Spawner Spawner => _spawner;
-        public bool IsBuying => _buySpawner.IsBuying;
-
-        private void Awake()
-        {
-            _buySpawner = GetComponent<BuySpawner>();
-        }
+        public bool IsBuying => Spawner.IsBuying;
 
         public bool TryBuyUpgrade(long price)
         {
-            if (PurchaseCharged.Invoke(price))
+            if (PurchaseCharged.Invoke(-price))
             {
                 return true;
             }

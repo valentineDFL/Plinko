@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using UnityEngine;
 
-namespace Assets.Scripts.Gold
+namespace Assets.Scripts.LootZone
 {
-    internal class GoldViewMediator : MonoBehaviour
+    internal class ViewGoldByBank
     {
-
     }
 }

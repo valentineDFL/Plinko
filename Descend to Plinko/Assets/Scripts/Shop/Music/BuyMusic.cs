@@ -43,7 +43,7 @@ namespace Assets.Scripts.Shop.Music
             }
             else
             {
-                if (PurchaseCharged.Invoke(Price))
+                if (PurchaseCharged.Invoke(-Price))
                 {
                     Buy();
                 }

@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.SaveLoad
 {
-    internal class DataSaverAndLoader
+    public class DataSaverAndLoader
     {
         public void Save(Data dataForSave)
         {
@@ -25,7 +25,6 @@ namespace Assets.Scripts.SaveLoad
                 return JsonUtility.FromJson<Data>(PlayerPrefs.GetString(Keys.GameData));
             else
             {
-                Debug.Log("Всё плохо");
                 return new Data();
             }
         }

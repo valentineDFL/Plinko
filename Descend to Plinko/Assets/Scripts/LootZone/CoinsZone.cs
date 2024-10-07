@@ -6,8 +6,9 @@ namespace Assets.Scripts.LootZone
 {
     internal class CoinsZone : MonoBehaviour
     {
-        public event Action<int> GoldCountChanged;
+        public event Func<long, bool> GoldChanged;
         public event Action GoldIconAnimationPlayed;
+
 
         private List<float> _coffs = new List<float>();
 
@@ -45,16 +46,14 @@ namespace Assets.Scripts.LootZone
 
                 if (number > 7)
                 {
-                    coffitient = UnityEngine.Random.Range(-0.1f, 1.0f);
+                    coffitient = UnityEngine.Random.Range(-4.1f, 1.0f);
                 }
                 else if (number < 7)
                 {
-                    coffitient = UnityEngine.Random.Range(0.1f, 4.0f);
+                    coffitient = UnityEngine.Random.Range(0.1f, 5.0f);
                 }
-                _coffs[i] = 100;//(float)Math.Round(coffitient, 1);
+                _coffs[i] = (float)Math.Round(coffitient, 1);
             }
-            // стоимость улучшений каждый раз прибавляется на 6.5 - 7 процента
-            
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
@@ -66,15 +65,20 @@ namespace Assets.Scripts.LootZone
                 collision.gameObject.transform.position = _spawnPos.transform.position;
 
                 BallByType(ball);
-
-                //Destroy(collision.gameObject);
+                
             }
         }
 
         private void BallByType<T>(T ball) where T : Ball
         {
-            GoldIconAnimationPlayed?.Invoke();
-            GoldCountChanged?.Invoke((int)(ball.Point * _coffs[ball.Index]));
+
+            long goldToAdd = (long)(ball.Point * _coffs[ball.Index]);
+            if (GoldChanged.Invoke(goldToAdd))
+            {
+                GoldIconAnimationPlayed?.Invoke();
+            }
+            
+
         }
 
 

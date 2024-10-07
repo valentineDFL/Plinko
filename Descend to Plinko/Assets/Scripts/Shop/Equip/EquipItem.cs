@@ -11,7 +11,7 @@ namespace Assets.Scripts.Shop.Equip
 {
     internal abstract class EquipItem : MonoBehaviour
     {
-        [SerializeField] protected DataRecorder DataRecorder;
+        [SerializeField] protected DataRecorderMenu DataRecorder;
         [SerializeField] protected ProductAdder ItemForSaleFolder;
     }
 }

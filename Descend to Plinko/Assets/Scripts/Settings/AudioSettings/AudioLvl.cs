@@ -9,7 +9,7 @@ namespace Assets.Scripts.Settings.AudioSettings
 {
     internal class AudioLvlController : MonoBehaviour
     {
-        [SerializeField] private List<AudioSource> _audio = new List<AudioSource>();
+        [SerializeField] private List<AudioSource> _audios = new List<AudioSource>();
         [SerializeField] private HorizontalScroller _horizontalScroller;
         private AudioViewBorderCalculator _volumeValueContainer;
 
@@ -28,10 +28,10 @@ namespace Assets.Scripts.Settings.AudioSettings
 
         public void SetAudioLvl()
         {
-            for (int i = 0; i < _audio.Count; i++)
+            for (int i = 0; i < _audios.Count; i++)
             {
                 //print(_audio[i].name);
-                _audio[i].volume = _volumeValueContainer.NormalizeSoundValue;
+                _audios[i].volume = _volumeValueContainer.NormalizeSoundValue;
             }
         }
     }

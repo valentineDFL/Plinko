@@ -48,9 +48,16 @@ namespace Assets
             gameObject.SetActive(false);
         }
 
+        public void GameOver(GameObject gameOverPanel)
+        {
+            Time.timeScale = 0;
+            gameOverPanel.SetActive(true);
+        }
+
         public void ExitApplication()
         {
             Application.Quit();
         }
+
     }
 }

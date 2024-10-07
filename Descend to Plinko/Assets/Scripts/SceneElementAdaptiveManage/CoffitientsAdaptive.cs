@@ -19,8 +19,6 @@ namespace Assets.Scripts.SceneManage
 
         private void Awake()
         {
-            print(Screen.safeArea.yMin / (Screen.height / CameraSize.Height));
-
             SetAdaptive();
         }
 

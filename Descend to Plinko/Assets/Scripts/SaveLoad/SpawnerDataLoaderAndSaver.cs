@@ -8,7 +8,7 @@ using Assets.Scripts.Shop.Spawner;
 
 namespace Assets.Scripts.SaveLoad
 {
-    internal class SpawnerDataLoaderAndSaver
+    public class SpawnerDataLoaderAndSaver
     {
         public void LoadSpawnersData(List<Spawner> spawners, Data data)
         {

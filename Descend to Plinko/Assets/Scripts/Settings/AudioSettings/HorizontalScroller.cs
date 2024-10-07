@@ -23,14 +23,19 @@ namespace Assets.Scripts.Settings.AudioSettings
 
         public void OnPointerMove(PointerEventData poi)
         {
-            Vector2 newPos = new Vector2(Mathf.Clamp(poi.position.x - Screen.width / 2, _audioLvlCalculator.MaxLeft.x, _audioLvlCalculator.MaxRight.x), _audioLvlCalculator.MaxRight.y);
-            _scroller.rectTransform.localPosition = newPos;
+            Vector2 newPos = new Vector2(Mathf.Clamp(poi.position.x, _audioLvlCalculator.MaxLeft.x, _audioLvlCalculator.MaxRight.x), _audioLvlCalculator.MaxRight.y);
 
-            if(poi.position.x - Screen.width != newPos.x)
-            {
-                OnScrollerMoved.Invoke();
-                _foregroundImage.fillAmount = _audioLvlCalculator.NormalizeSoundValue;
-            }
+            print(_scroller.rectTransform.InverseTransformPoint(Camera.main.ScreenToWorldPoint(poi.position)));
+
+
+            //if(poi.position.x - Screen.width != newPos.x)
+            //{
+
+            //OnScrollerMoved.Invoke();
+            //    _foregroundImage.fillAmount = _audioLvlCalculator.NormalizeSoundValue;
+            //    _scroller.rectTransform.localPosition = _scroller.rectTransform.InverseTransformPoint(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+
+            //}
         }
     }
 }

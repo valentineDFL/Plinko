@@ -33,6 +33,8 @@ namespace Assets.Scripts.Settings.AudioSettings
             Image image = _backgroundImage;
 
             float offset = _scroller.rectTransform.rect.width * _offset;
+
+            print(offset + " - " + _scroller.rectTransform.rect.width + " - " + _offset);
             float nedeedSize = image.rectTransform.rect.width - (image.rectTransform.rect.width / 2);
             nedeedSize -= offset;
 

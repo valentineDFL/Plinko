@@ -17,7 +17,7 @@ public class RotationScript : MonoBehaviour
 
     private void Update()
     {
-        _angle += _multipluyerCoff * Time.deltaTime;
+        _angle += _multipluyerCoff * Time.unscaledDeltaTime;
         this.transform.position = new Vector3(_position.x + Mathf.Cos(_angle) * _radius, _position.y + Mathf.Sin(_angle) * _radius);
         
     }

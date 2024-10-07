@@ -8,5 +8,6 @@ namespace Assets.Scripts.Balls
 {
     internal class BlueBall : Ball
     {
+        
     }
 }

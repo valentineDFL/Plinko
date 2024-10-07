@@ -11,19 +11,19 @@ public class GoldCount : MonoBehaviour
 
     private void OnEnable()
     {
-        _bank.GoldDecreased += SetGoldCount;
+        _bank.GoldChanged += SetGoldCount;
     }
 
     private void OnDisable()
     {
-        _bank.GoldDecreased -= SetGoldCount;
+        _bank.GoldChanged -= SetGoldCount;
     }
 
     private void Start()
     {
         _ceilGold = new CeilGold();
         _textMeshPro = GetComponent<TextMeshProUGUI>();
-        _textMeshPro.text = _ceilGold.Ceil(_bank.Gold);
+        _textMeshPro.text = _ceilGold.Ceil(_bank.GoldCount);
     }
 
     private void SetGoldCount(long count)

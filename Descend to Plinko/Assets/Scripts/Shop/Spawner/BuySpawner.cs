@@ -50,7 +50,7 @@ namespace Assets.Scripts.Shop.Spawner
             }
             else
             {
-                if (PurchaseCharged.Invoke(Price))
+                if (PurchaseCharged.Invoke(-Price))
                 {
                     Buy();
                 }
@@ -78,7 +78,7 @@ namespace Assets.Scripts.Shop.Spawner
             PriceTag.text = Keys.Owned;
             IsBuying = true;
 
-            _spawner.SetBuyStatus();
+            _spawner.IsBuying = IsBuying;
         }
     }
 }

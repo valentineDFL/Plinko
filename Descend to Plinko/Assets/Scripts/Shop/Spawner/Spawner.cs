@@ -38,7 +38,15 @@ namespace Assets.Scripts.Shop.Spawner
         public int CreationTimeLvl => _creationTimeLvl;
         public int SpawnerCapacityLvl => _spawnerCapacityLvl;
 
-        public bool IsBuying => _isBuying;
+        public bool IsBuying
+        {
+            get { return _isBuying; }
+            set
+            {
+                if (_isBuying != value)
+                    _isBuying = value;
+            }
+        }
 
         public void UpdateCapacityLvl()
         {
@@ -71,11 +79,6 @@ namespace Assets.Scripts.Shop.Spawner
             _spawnerCapacityLvl = capacityLvl;
 
             _isBuying = isBuying;
-        }
-
-        public void SetBuyStatus()
-        {
-            _isBuying = true;
         }
     }
 }

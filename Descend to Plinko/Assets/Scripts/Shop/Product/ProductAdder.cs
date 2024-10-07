@@ -12,7 +12,7 @@ namespace Assets.Scripts.Shop.Product
 {
     internal abstract class ProductAdder : MonoBehaviour
     {
-        [SerializeField] protected Bank Bank;
+        [SerializeField] protected ShopBank Bank;
         [SerializeField] protected GameObject NotEnoughtMoneyPanel;
         [SerializeField] protected long Price;
 

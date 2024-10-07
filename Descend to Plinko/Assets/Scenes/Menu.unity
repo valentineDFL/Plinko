@@ -308,7 +308,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 0
   m_OnCullStateChanged:
@@ -937,7 +937,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bac817b30cdc7d4c8871e0a67f9d91b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Bank: {fileID: 1302623212}
+  Bank: {fileID: 0}
   NotEnoughtMoneyPanel: {fileID: 1942939194}
   Price: 1000
 --- !u!114 &58499794
@@ -4793,7 +4793,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5836d112624deb54bbf1a77178a7a4cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Bank: {fileID: 1302623212}
+  Bank: {fileID: 0}
   NotEnoughtMoneyPanel: {fileID: 1942939194}
   Price: 400
 --- !u!114 &694488238
@@ -5143,51 +5143,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 717e85a1fbd876849a71b8bc9d1fbfbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _audio:
-  - {fileID: 1826635484}
-  - {fileID: 1826635487}
-  - {fileID: 1225708936}
-  - {fileID: 1225708937}
-  - {fileID: 1538164710}
-  - {fileID: 1538164713}
-  - {fileID: 1430566321}
-  - {fileID: 1430566322}
-  - {fileID: 1871803700}
-  - {fileID: 1871803701}
-  - {fileID: 1340382642}
-  - {fileID: 1340382643}
-  - {fileID: 587003797}
-  - {fileID: 587003798}
-  - {fileID: 41904359}
-  - {fileID: 41904360}
-  - {fileID: 405138312}
-  - {fileID: 405138313}
-  - {fileID: 823991431}
-  - {fileID: 823991432}
-  - {fileID: 2125022280}
-  - {fileID: 2125022281}
-  - {fileID: 912624630}
-  - {fileID: 912624631}
-  - {fileID: 184007410}
-  - {fileID: 1585849363}
-  - {fileID: 1117005216}
-  - {fileID: 1555786469}
-  - {fileID: 2024766232}
-  - {fileID: 959756106}
-  - {fileID: 583305957}
-  - {fileID: 108180414}
-  - {fileID: 884783747}
-  - {fileID: 1779291871}
-  - {fileID: 470751042}
-  - {fileID: 1648354150}
-  - {fileID: 1205193135}
-  - {fileID: 1107730013}
-  - {fileID: 247336461}
-  - {fileID: 1297990180}
-  - {fileID: 434334117}
-  - {fileID: 0}
-  - {fileID: 1962324478}
-  - {fileID: 897847237}
+  _audios: []
   _horizontalScroller: {fileID: 210772603}
 --- !u!1 &823991425
 GameObject:
@@ -5649,7 +5605,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.000015258789}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0.000061035, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &869581150
@@ -5666,7 +5622,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -9555,7 +9511,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c3de740922818d4283db134e85760b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bank: {fileID: 1302623212}
+  Bank: {fileID: 1302623212}
   _spawners:
   - {fileID: 11400000, guid: 964901f4643a92d45a99f8af37ca268b, type: 2}
   - {fileID: 11400000, guid: 1e04adc6de247284bb4162f405878609, type: 2}
@@ -9575,10 +9531,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1302623208}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aecfa91ef34173245b34e7da41307cd3, type: 3}
+  m_Script: {fileID: 11500000, guid: 8e8eab00c095bf442bdbe6ce24079535, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _loadGold: {fileID: 1302623211}
+  LoadGold: {fileID: 1302623211}
   _itemForSaleFolder:
   - {fileID: 1349498113}
   - {fileID: 694488237}
@@ -9964,7 +9920,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c615442d8cd5d5d4ea01580957a80788, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Bank: {fileID: 1302623212}
+  Bank: {fileID: 0}
   NotEnoughtMoneyPanel: {fileID: 1942939194}
   Price: 300
 --- !u!114 &1349498114
@@ -11538,6 +11494,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1642588685}
   - component: {fileID: 1642588684}
+  - component: {fileID: 1642588686}
   m_Layer: 0
   m_Name: IdleGoldGrind
   m_TagString: Untagged
@@ -11574,6 +11531,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1642588686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1642588683}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9072eaaca36574448a195986deeecdd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Ui: []
+  BallCreationTime: 0
 --- !u!1 &1645335473
 GameObject:
   m_ObjectHideFlags: 0

@@ -45,7 +45,7 @@ namespace Assets.Scripts.Shop
             }
             else
             {
-                if (PurchaseCharged.Invoke(Price))
+                if (PurchaseCharged.Invoke(-Price))
                 {
                     Buy();
                 }
